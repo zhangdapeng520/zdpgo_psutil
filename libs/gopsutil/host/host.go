@@ -117,7 +117,7 @@ func InfoWithContext(ctx context.Context) (*InfoStat, error) {
 	return ret, nil
 }
 
-// BootTime returns the system boot time expressed in seconds since the epoch.
+// BootTime 返回系统启动时间（以秒为单位，从历元开始）。
 func BootTime() (uint64, error) {
 	return BootTimeWithContext(context.Background())
 }

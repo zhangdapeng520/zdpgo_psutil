@@ -8,26 +8,29 @@ import (
 
 var invoke common.Invoker = common.Invoke{}
 
+// UsageStat 使用状态
 type UsageStat struct {
-	Path              string  `json:"path"`
-	Fstype            string  `json:"fstype"`
-	Total             uint64  `json:"total"`
-	Free              uint64  `json:"free"`
-	Used              uint64  `json:"used"`
-	UsedPercent       float64 `json:"usedPercent"`
+	Path              string  `json:"path"`        // 路径，传入的参数
+	Fstype            string  `json:"fstype"`      // 文件系统类型
+	Total             uint64  `json:"total"`       // 该分区总容量
+	Free              uint64  `json:"free"`        // 空闲容量
+	Used              uint64  `json:"used"`        // 已使用的容量
+	UsedPercent       float64 `json:"usedPercent"` // 使用百分比
 	InodesTotal       uint64  `json:"inodesTotal"`
 	InodesUsed        uint64  `json:"inodesUsed"`
 	InodesFree        uint64  `json:"inodesFree"`
 	InodesUsedPercent float64 `json:"inodesUsedPercent"`
 }
 
+// PartitionStat 分区信息
 type PartitionStat struct {
-	Device     string   `json:"device"`
-	Mountpoint string   `json:"mountpoint"`
-	Fstype     string   `json:"fstype"`
-	Opts       []string `json:"opts"`
+	Device     string   `json:"device"`     // 分区标识，在 Windows 上即为C:这类格式
+	Mountpoint string   `json:"mountpoint"` // 挂载点，即该分区的文件路径起始位置
+	Fstype     string   `json:"fstype"`     // 文件系统类型，Windows 常用的有 FAT、NTFS 等，Linux 有 ext、ext2、ext3等
+	Opts       []string `json:"opts"`       // 选项，与系统相关
 }
 
+// IOCountersStat 磁盘信息
 type IOCountersStat struct {
 	ReadCount        uint64 `json:"readCount"`
 	MergedReadCount  uint64 `json:"mergedReadCount"`
@@ -60,22 +63,19 @@ func (d IOCountersStat) String() string {
 	return string(s)
 }
 
-// Usage returns a file system usage. path is a filesystem path such
-// as "/", not device file path like "/dev/vda1".  If you want to use
-// a return value of disk.Partitions, use "Mountpoint" not "Device".
+// Usage 获得路径path所在磁盘的使用情况，返回一个UsageStat结构
 func Usage(path string) (*UsageStat, error) {
 	return UsageWithContext(context.Background(), path)
 }
 
-// Partitions returns disk partitions. If all is false, returns
-// physical devices only (e.g. hard disks, cd-rom drives, USB keys)
-// and ignore all others (e.g. memory partitions such as /dev/shm)
-//
-// 'all' argument is ignored for BSD, see: https://github.com/giampaolo/psutil/issues/906
+// Partitions 返回分区信息。
+// 如果all = false，只返回实际的物理分区（包括硬盘、CD-ROM、USB），忽略其它的虚拟分区。
+// 如果all = true则返回所有的分区。返回类型为[]PartitionStat，每个分区对应一个PartitionStat结构
 func Partitions(all bool) ([]PartitionStat, error) {
 	return PartitionsWithContext(context.Background(), all)
 }
 
+// IOCounters 获取磁盘个数，返回磁盘的信息映射字典
 func IOCounters(names ...string) (map[string]IOCountersStat, error) {
 	return IOCountersWithContext(context.Background(), names...)
 }

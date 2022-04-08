@@ -72,6 +72,9 @@ type performanceInformation struct {
 	threadCount       uint32
 }
 
+// SwapMemory 获取交换内存
+// 交换内存是以页为单位的，如果出现缺页错误(page fault)，操作系统会将磁盘中的某些页载入内存，同时会根据特定的机制淘汰一些内存中的页。
+// PgIn表征载入页数，PgOut淘汰页数，PgFault缺页错误数
 func SwapMemory() (*SwapMemoryStat, error) {
 	return SwapMemoryWithContext(context.Background())
 }

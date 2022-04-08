@@ -84,9 +84,9 @@ type SwapMemoryStat struct {
 	UsedPercent float64 `json:"usedPercent"`
 	Sin         uint64  `json:"sin"`
 	Sout        uint64  `json:"sout"`
-	PgIn        uint64  `json:"pgIn"`
-	PgOut       uint64  `json:"pgOut"`
-	PgFault     uint64  `json:"pgFault"`
+	PgIn        uint64  `json:"pgIn"`    // 表征载入页数
+	PgOut       uint64  `json:"pgOut"`   // 淘汰页数
+	PgFault     uint64  `json:"pgFault"` // 缺页错误数
 
 	// Linux specific numbers
 	// https://www.kernel.org/doc/Documentation/cgroup-v2.txt
