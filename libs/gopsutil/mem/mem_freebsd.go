@@ -10,7 +10,7 @@ import (
 
 	"golang.org/x/sys/unix"
 
-	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/internal/common"
+	"github.com/zhangdapeng520/zdpgo_psutil/libs/gopsutil/internal/common"
 )
 
 func VirtualMemory() (*VirtualMemoryStat, error) {

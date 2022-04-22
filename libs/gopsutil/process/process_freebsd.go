@@ -14,7 +14,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/internal/common"
+	"github.com/zhangdapeng520/zdpgo_psutil/libs/gopsutil/internal/common"
 	"golang.org/x/sys/unix"
 )
 

@@ -12,7 +12,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/internal/common"
+	"github.com/zhangdapeng520/zdpgo_psutil/libs/gopsutil/internal/common"
 )
 
 // Return a list of network connections opened.

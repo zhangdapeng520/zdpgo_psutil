@@ -13,8 +13,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/internal/common"
-	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/net"
+	"github.com/zhangdapeng520/zdpgo_psutil/libs/gopsutil/internal/common"
+	"github.com/zhangdapeng520/zdpgo_psutil/libs/gopsutil/net"
 	"github.com/zhangdapeng520/zdpgo_psutil/libs/sysconf"
 	"golang.org/x/sys/unix"
 )

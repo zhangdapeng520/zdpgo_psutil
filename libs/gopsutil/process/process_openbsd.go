@@ -18,8 +18,8 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/internal/common"
-	mem "github.com/zhangdapeng520/zdpgo_psutil/gopsutil/mem"
+	"github.com/zhangdapeng520/zdpgo_psutil/libs/gopsutil/internal/common"
+	mem "github.com/zhangdapeng520/zdpgo_psutil/libs/gopsutil/mem"
 	"golang.org/x/sys/unix"
 )
 

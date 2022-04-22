@@ -33,7 +33,7 @@ cd "${V3DIR}"
 go mod init
 
 ###  change import path
-find . -name "*.go" -print0 | xargs -0 -I@ sed -i 's|"github.com/shirou/gopsutil/|"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/|g' @
+find . -name "*.go" -print0 | xargs -0 -I@ sed -i 's|"github.com/shirou/gopsutil/|"github.com/zhangdapeng520/zdpgo_psutil/libs/gopsutil/|g' @
 
 ############ Issues
 
