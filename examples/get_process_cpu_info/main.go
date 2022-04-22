@@ -1,17 +1,3 @@
-# zdpgo_psutil
-
-Go语言的系统工具库
-
-项目地址：https://github.com/zhangdapeng520/zdpgo_psutil
-
-## 版本历史
-
-- 版本0.1.0 2022年4月8日 基本功能
-- 版本0.1.1 2022年4月22日 新增：获取进程CPU信息
-
-## 使用示例
-### 获取进程CPU信息
-```go
 package main
 
 import (
@@ -32,4 +18,3 @@ func main() {
 	fmt.Println("创建的线程数：", info.ThredsNumber)
 	fmt.Println("创建的goroutine数：", info.GoroutineNumber)
 }
-```

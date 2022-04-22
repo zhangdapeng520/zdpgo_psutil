@@ -26,3 +26,12 @@ func TestPsutil_ip_local(t *testing.T) {
 		}
 	}
 }
+
+func TestPsutil_GetCpuInfo(t *testing.T) {
+	p := getPsutil()
+	info, err := p.GetProcessCpuInfo()
+	if err != nil {
+		panic(err)
+	}
+	t.Log(info)
+}
