@@ -1,5 +1,17 @@
 package zdpgo_psutil
 
+// BaseInfo 基础信息
+type BaseInfo struct {
+	MemoryUsedPercent float64 `json:"memory_used_percent"` // 内存使用百分比
+	MemoryTotal       uint64  `json:"memory_total"`        // 总内存
+	MemoryFree        uint64  `json:"memory_free"`         // 可用内存
+	CpuUsedPercent    float64 `json:"cpu_used_percent"`    // CPU使用百分比
+	Platform          string  `json:"platform"`            // 平台
+	Family            string  `json:"family"`              // 类别
+	Version           string  `json:"version"`             // 版本
+	CpuNum            int     `json:"cpu_num"`             // CPU数量
+}
+
 // ProcessCpuInfo CPU 信息
 type ProcessCpuInfo struct {
 	AllCpuPercent        float64 `json:"all_cpu_percent"`        // 占用所有CPU的百分比

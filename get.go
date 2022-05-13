@@ -2,6 +2,9 @@ package zdpgo_psutil
 
 import (
 	"fmt"
+	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/cpu"
+	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/host"
+	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/mem"
 	psnet "github.com/zhangdapeng520/zdpgo_psutil/gopsutil/net"
 	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/process"
 	"net"
@@ -228,5 +231,52 @@ func (p *Psutil) GetNetworkRate() (rates NetworkInfo, err error) {
 	}
 
 	// 返回网卡速率信息
+	return
+}
+
+// GetBaseInfo 获取基本信息
+func (p *Psutil) GetBaseInfo() (info BaseInfo, err error) {
+	memoryInfo, err := mem.VirtualMemory()
+	if err != nil {
+		p.Log.Error("获取内存信息失败", "error", err)
+		return
+	}
+
+	// 获取内存使用率
+	info.MemoryTotal = memoryInfo.Total
+	info.MemoryFree = memoryInfo.Free
+	info.MemoryUsedPercent = memoryInfo.UsedPercent
+
+	// cpu使用率
+	cpuPercentArr, err := cpu.Percent(time.Second, false)
+	if err != nil {
+		p.Log.Error("获取cpu使用率失败", "error", err)
+		return
+	}
+	var (
+		cpuPercent float64
+		total      float64
+	)
+	for _, cpuP := range cpuPercentArr {
+		total += cpuP
+	}
+	cpuPercent = total / float64(len(cpuPercentArr))
+	info.CpuUsedPercent = cpuPercent
+
+	// 平台
+	platform, family, version, err := host.PlatformInformation()
+	if err != nil {
+		p.Log.Error("获取平台信息失败", "error", err)
+		return
+	}
+	info.Platform = platform
+	info.Family = family
+	info.Version = version
+
+	// CPU数量
+	info.CpuNum = runtime.NumCPU()
+
+	// 返回
+	p.Log.Debug("获取基本信息成功", "info", info)
 	return
 }
