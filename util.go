@@ -1,4 +1,4 @@
-package ip
+package zdpgo_psutil
 
 import (
 	"strings"
