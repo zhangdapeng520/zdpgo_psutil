@@ -1,5 +1,7 @@
 package zdpgo_psutil
 
 func getPsutil() *Psutil {
-	return New()
+	return NewWithConfig(Config{
+		Debug: true,
+	})
 }

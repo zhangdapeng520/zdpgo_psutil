@@ -2,6 +2,7 @@ package zdpgo_psutil
 
 import (
 	"fmt"
+	psnet "github.com/zhangdapeng520/zdpgo_psutil/gopsutil/net"
 	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/process"
 	"net"
 	"os"
@@ -79,6 +80,7 @@ func (p *Psutil) GetLocalIP() (ip string, err error) {
 	// 获取所有的地址
 	address, err := net.InterfaceAddrs()
 	if err != nil {
+		p.Log.Error("获取所有IP地址失败", "error", err, "address", address)
 		return
 	}
 
@@ -105,4 +107,126 @@ func (p *Psutil) GetLocalIP() (ip string, err error) {
 // GetNetworkIpType 获取在网络地址中的IP的分类，返回IP地址和IP分类类型
 func (p *Psutil) GetNetworkIpType(netWorkAddr string) (string, string) {
 	return GetIpInNetworkType(netWorkAddr)
+}
+
+// GetNetworkInfo 获取网卡信息
+func (p *Psutil) GetNetworkInfo() (networkInfo NetworkInfo) {
+	// 创建网卡状态列表
+	ifStats, err := psnet.Interfaces()
+	if err != nil {
+		p.Log.Error("创建网卡状态列表失败", "error", err)
+		return
+	}
+
+	// 网卡信息
+	networkInfo = NetworkInfo{}
+
+	// 获取网卡速率
+	ifRates, err := p.GetNetworkRate()
+	if err != nil {
+		p.Log.Error("获取网卡上行速率和下行速率失败", "error", err)
+		return
+	}
+
+	// 遍历网卡速率
+	for _, ifState := range ifStats {
+		// 对网卡进行分组
+		var ipv4 []string
+		var ipv6 []string
+		for _, addr := range ifState.Addrs {
+			// 获取网络地址的IP地址和IP类型
+			ipAddr, ipType := p.GetNetworkIpType(addr.Addr)
+
+			// 进行分类
+			if ipType == "ipv4" {
+				ipv4 = append(ipv4, ipAddr)
+			} else if ipType == "ipv6" {
+				ipv6 = append(ipv6, ipAddr)
+			} else {
+				p.Log.Debug("未知的ip地址类型", "addr", addr.Addr, "ipAddr", ipAddr, "ipType", ipType)
+			}
+		}
+
+		// 封装分组数据
+		networkInfo[ifState.Name] = RateInfo{
+			Ip:       ipv4,
+			Ipv6:     ipv6,
+			UpRate:   ifRates[ifState.Name].UpRate,   // 上行速率
+			DownRate: ifRates[ifState.Name].DownRate, // 下行速率
+		}
+	}
+
+	p.Log.Debug("获取网卡信息成功", "networkInfo", networkInfo)
+	return
+}
+
+// GetNetworkRate 获取网卡速率信息
+func (p *Psutil) GetNetworkRate() (rates NetworkInfo, err error) {
+	// 获取网卡网速信息
+	getIfIO := func() (ioInfo NetworkIOInfo, err error) {
+		// {网卡名称：{xx：xx}}
+		ioInfo = NetworkIOInfo{}
+
+		// 获取网卡个数
+		ifs, err := psnet.IOCounters(true)
+		if err != nil {
+			p.Log.Error("获取网卡个数失败", "error", err, "ifs", ifs)
+			return nil, err
+		}
+
+		// 遍历网卡
+		for _, if_ := range ifs {
+			// 每个网卡的发送字节数和接收字节数
+			ioInfo[if_.Name] = IOInfo{
+				SendBytes:    if_.BytesSent,
+				ReceiveBytes: if_.BytesRecv,
+			}
+		}
+
+		// 返回网卡信息
+		return
+	}
+
+	var (
+		IO1 NetworkIOInfo
+		IO2 NetworkIOInfo
+	)
+
+	// 第一次获取网卡信息
+	IO1, err = getIfIO()
+	if err != nil {
+		p.Log.Error("获取网卡信息失败", "error", err)
+		return
+	}
+	time.Sleep(time.Second)
+
+	// 第二次获取网卡信息
+	IO2, err = getIfIO()
+	if err != nil {
+		p.Log.Error("获取网卡信息失败", "error", err)
+		return
+	}
+
+	// 计算网卡速率信息
+	rates = NetworkInfo{}
+	for ifName := range IO1 {
+		// 下行速率：指的是本机的接收速率
+		// 网卡下行速率 = （第二次发送字节数 - 第一次发送字节数） / 1024
+		downRate := float32(IO2[ifName].ReceiveBytes-IO1[ifName].ReceiveBytes) / 1024
+
+		// 上行速率：指的是本机的发送速率
+		// 网卡上行速率 = （第二次接收字节数 - 第一次接收字节数） / 1024
+		upRate := float32(IO2[ifName].SendBytes-IO1[ifName].SendBytes) / 1024
+
+		// 网卡速率信息
+		rates[ifName] = RateInfo{
+			UpRate:   upRate,
+			DownRate: downRate,
+			Ip:       nil,
+			Ipv6:     nil,
+		}
+	}
+
+	// 返回网卡速率信息
+	return
 }

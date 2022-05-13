@@ -6,31 +6,29 @@ Go语言的系统工具库
 
 ## 版本历史
 
-- 版本0.1.0 2022年4月8日 基本功能
-- 版本0.1.1 2022年4月22日 新增：获取进程CPU信息
-- 版本0.1.2 2022年4月22日 BUG修复：修复一些依赖BUG
+- v0.1.0 2022/4/8   基本功能
+- v0.1.1 2022/4/22  新增：获取进程CPU信息
+- v0.1.2 2022/4/22  BUG修复：修复一些依赖BUG
+- v0.1.3 2022/5/13  新增：获取网卡信息
 
 ## 使用示例
-### 获取进程CPU信息
+### 获取网卡信息
 ```go
 package main
 
-import (
-	"fmt"
+import "github.com/zhangdapeng520/zdpgo_psutil"
 
-	"github.com/zhangdapeng520/zdpgo_psutil"
-)
+/*
+@Time : 2022/5/13 15:34
+@Author : 张大鹏
+@File : main.go
+@Software: Goland2021.3.1
+@Description: 获取网卡信息
+*/
 
 func main() {
-	p := zdpgo_psutil.New()
-	info, err := p.GetProcessCpuInfo()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("进程1s内占用所有CPU比例：", info.AllCpuPercent)
-	fmt.Println("进程1s内占用单个CPU比例：", info.SingleCpuPercent)
-	fmt.Println("进程占用内存比例：", info.ProcessMemoryPercent)
-	fmt.Println("创建的线程数：", info.ThredsNumber)
-	fmt.Println("创建的goroutine数：", info.GoroutineNumber)
+	p := zdpgo_psutil.NewWithConfig(zdpgo_psutil.Config{Debug: true})
+	p.GetNetworkInfo()
 }
 ```
+

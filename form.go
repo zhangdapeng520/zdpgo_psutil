@@ -17,3 +17,23 @@ type UsageInfo struct {
 	K uint64 `json:"kb"` // 多少kb
 	B uint64 `json:"b"`  // 多少b
 }
+
+// NetworkInfo 网卡信息
+type NetworkInfo map[string]RateInfo
+
+// RateInfo 网卡速率信息
+type RateInfo struct {
+	UpRate   float32  `json:"up_rate"`   // 上行速率
+	DownRate float32  `json:"down_rate"` // 下行速率
+	Ip       []string `json:"ip"`
+	Ipv6     []string `json:"ipv6"`
+}
+
+// IOInfo 读写信息
+type IOInfo struct {
+	SendBytes    uint64 `json:"send_bytes"`    // 发送字节数
+	ReceiveBytes uint64 `json:"receive_bytes"` // 接收字节数
+}
+
+// NetworkIOInfo 网卡的IO信息
+type NetworkIOInfo map[string]IOInfo
