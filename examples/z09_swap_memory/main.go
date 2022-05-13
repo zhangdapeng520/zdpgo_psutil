@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/zhangdapeng520/zdpgo_psutil/libs/gopsutil/mem"
+	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/mem"
 )
 
 func main() {

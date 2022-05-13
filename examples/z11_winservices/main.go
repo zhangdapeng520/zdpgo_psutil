@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/zhangdapeng520/zdpgo_psutil/libs/gopsutil/winservices"
+	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/winservices"
 )
 
 func main() {

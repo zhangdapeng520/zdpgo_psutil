@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/zhangdapeng520/zdpgo_psutil/libs/gopsutil/host"
+	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/host"
 	"time"
 )
 

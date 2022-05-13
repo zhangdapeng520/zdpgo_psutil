@@ -2,7 +2,7 @@ package zdpgo_psutil
 
 import (
 	"fmt"
-	"github.com/zhangdapeng520/zdpgo_psutil/libs/gopsutil/process"
+	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/process"
 	"net"
 	"os"
 	"runtime"
