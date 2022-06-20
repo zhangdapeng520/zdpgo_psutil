@@ -1,6 +1,9 @@
 package main
 
-import "github.com/zhangdapeng520/zdpgo_psutil"
+import (
+	"github.com/zhangdapeng520/zdpgo_log"
+	"github.com/zhangdapeng520/zdpgo_psutil"
+)
 
 /*
 @Time : 2022/5/13 15:34
@@ -11,6 +14,6 @@ import "github.com/zhangdapeng520/zdpgo_psutil"
 */
 
 func main() {
-	p := zdpgo_psutil.NewWithConfig(zdpgo_psutil.Config{Debug: true})
+	p := zdpgo_psutil.New(zdpgo_log.Tmp)
 	p.GetNetworkInfo()
 }

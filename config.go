@@ -10,6 +10,4 @@ package zdpgo_psutil
 
 // Config 配置对象
 type Config struct {
-	Debug       bool   `yaml:"debug" json:"debug"`                 // 是否为debug模式
-	LogFilePath string `yaml:"log_file_path" json:"log_file_path"` // 日志路径
 }

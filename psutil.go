@@ -9,28 +9,17 @@ type Psutil struct {
 	Log    *zdpgo_log.Log // 日志对象
 }
 
-func New() *Psutil {
-	return NewWithConfig(Config{})
+func New(log *zdpgo_log.Log) *Psutil {
+	return NewWithConfig(&Config{}, log)
 }
 
-func NewWithConfig(config Config) *Psutil {
+func NewWithConfig(config *Config, log *zdpgo_log.Log) *Psutil {
 	p := Psutil{}
 
 	// 日志
-	if config.LogFilePath == "" {
-		config.LogFilePath = "logs/zdpgo/zdpgo_psutil.log"
-	}
-	logConfig := zdpgo_log.Config{
-		Debug:       config.Debug,
-		OpenJsonLog: true,
-		LogFilePath: config.LogFilePath,
-	}
-	if config.Debug {
-		logConfig.IsShowConsole = true
-	}
-	p.Log = zdpgo_log.NewWithConfig(logConfig)
+	p.Log = log
 
 	// 配置
-	p.Config = &config
+	p.Config = config
 	return &p
 }

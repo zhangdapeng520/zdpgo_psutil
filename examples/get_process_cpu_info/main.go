@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"github.com/zhangdapeng520/zdpgo_log"
 
 	"github.com/zhangdapeng520/zdpgo_psutil"
 )
 
 func main() {
-	p := zdpgo_psutil.New()
+	p := zdpgo_psutil.New(zdpgo_log.Tmp)
 	info, err := p.GetThreadCpuInfo()
 	if err != nil {
 		panic(err)
