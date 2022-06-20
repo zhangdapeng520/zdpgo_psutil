@@ -2,6 +2,7 @@ package zdpgo_psutil
 
 import (
 	"fmt"
+	"github.com/zhangdapeng520/zdpgo_log"
 	"testing"
 	"time"
 )
@@ -16,13 +17,13 @@ import (
 
 // 测试获取进程占用的内存信息
 func TestPsutil_GetThreadMemoryUsage(t *testing.T) {
-	p := getPsutil()
+	p := New(zdpgo_log.Tmp)
 	fmt.Println(p.GetThreadMemoryUsage().M)
 }
 
 // 测试获取进程占用的CPU信息
 func TestPsutil_GetThreadCpuInfo(t *testing.T) {
-	p := getPsutil()
+	p := New(zdpgo_log.Tmp)
 
 	// 执行多个耗时很长的计算
 	sum := 0
@@ -44,7 +45,7 @@ func TestPsutil_GetThreadCpuInfo(t *testing.T) {
 
 // 测试获取本机IP
 func TestIP_LocalIP(t *testing.T) {
-	pu := getPsutil()
+	pu := New(zdpgo_log.Tmp)
 
 	// 获取ip
 	ip, err := pu.GetLocalIP()
