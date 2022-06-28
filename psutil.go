@@ -1,23 +1,15 @@
 package zdpgo_psutil
 
-import (
-	"github.com/zhangdapeng520/zdpgo_log"
-)
-
 type Psutil struct {
-	Config *Config        // 配置对象
-	Log    *zdpgo_log.Log // 日志对象
+	Config *Config // 配置对象
 }
 
-func New(log *zdpgo_log.Log) *Psutil {
-	return NewWithConfig(&Config{}, log)
+func New() *Psutil {
+	return NewWithConfig(&Config{})
 }
 
-func NewWithConfig(config *Config, log *zdpgo_log.Log) *Psutil {
+func NewWithConfig(config *Config) *Psutil {
 	p := Psutil{}
-
-	// 日志
-	p.Log = log
 
 	// 配置
 	p.Config = config

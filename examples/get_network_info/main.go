@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/zhangdapeng520/zdpgo_log"
 	"github.com/zhangdapeng520/zdpgo_psutil"
 )
 
@@ -14,6 +13,6 @@ import (
 */
 
 func main() {
-	p := zdpgo_psutil.New(zdpgo_log.Tmp)
+	p := zdpgo_psutil.New()
 	p.GetNetworkInfo()
 }

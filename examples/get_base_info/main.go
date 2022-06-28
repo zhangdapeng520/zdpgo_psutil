@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/zhangdapeng520/zdpgo_log"
 	"github.com/zhangdapeng520/zdpgo_psutil"
 )
 
@@ -15,7 +14,7 @@ import (
 */
 
 func main() {
-	p := zdpgo_psutil.New(zdpgo_log.Tmp)
+	p := zdpgo_psutil.New()
 	info, err := p.GetBaseInfo()
 	if err != nil {
 		return

@@ -1,7 +1,6 @@
 package zdpgo_psutil
 
 import (
-	"fmt"
 	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/cpu"
 	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/host"
 	"github.com/zhangdapeng520/zdpgo_psutil/gopsutil/mem"
@@ -48,14 +47,12 @@ func (p *Psutil) GetThreadCpuInfo() (info ProcessCpuInfo, err error) {
 	// 创建一个进程
 	pr, err := process.NewProcess(int32(os.Getpid()))
 	if err != nil {
-		p.Log.Error("创建进程失败", "error", err)
 		return
 	}
 
 	// 进程的CPU使用率需要通过计算指定时间内的进程的CPU使用时间变化计算出来
 	info.AllCpuPercent, err = pr.Percent(time.Second)
 	if err != nil {
-		p.Log.Error("计算所有CPU的占用百分比失败", "error", err)
 		return
 	}
 
@@ -66,7 +63,6 @@ func (p *Psutil) GetThreadCpuInfo() (info ProcessCpuInfo, err error) {
 	// 获取进程占用内存的比例
 	info.ProcessMemoryPercent, err = pr.MemoryPercent()
 	if err != nil {
-		fmt.Println("获取进程占用的内存比例失败", "error", err)
 		return
 	}
 
@@ -83,7 +79,6 @@ func (p *Psutil) GetLocalIP() (ip string, err error) {
 	// 获取所有的地址
 	address, err := net.InterfaceAddrs()
 	if err != nil {
-		p.Log.Error("获取所有IP地址失败", "error", err, "address", address)
 		return
 	}
 
@@ -117,7 +112,6 @@ func (p *Psutil) GetNetworkInfo() (networkInfo NetworkInfo) {
 	// 创建网卡状态列表
 	ifStats, err := psnet.Interfaces()
 	if err != nil {
-		p.Log.Error("创建网卡状态列表失败", "error", err)
 		return
 	}
 
@@ -127,7 +121,6 @@ func (p *Psutil) GetNetworkInfo() (networkInfo NetworkInfo) {
 	// 获取网卡速率
 	ifRates, err := p.GetNetworkRate()
 	if err != nil {
-		p.Log.Error("获取网卡上行速率和下行速率失败", "error", err)
 		return
 	}
 
@@ -145,8 +138,6 @@ func (p *Psutil) GetNetworkInfo() (networkInfo NetworkInfo) {
 				ipv4 = append(ipv4, ipAddr)
 			} else if ipType == "ipv6" {
 				ipv6 = append(ipv6, ipAddr)
-			} else {
-				p.Log.Debug("未知的ip地址类型", "addr", addr.Addr, "ipAddr", ipAddr, "ipType", ipType)
 			}
 		}
 
@@ -159,7 +150,6 @@ func (p *Psutil) GetNetworkInfo() (networkInfo NetworkInfo) {
 		}
 	}
 
-	p.Log.Debug("获取网卡信息成功", "networkInfo", networkInfo)
 	return
 }
 
@@ -173,7 +163,6 @@ func (p *Psutil) GetNetworkRate() (rates NetworkInfo, err error) {
 		// 获取网卡个数
 		ifs, err := psnet.IOCounters(true)
 		if err != nil {
-			p.Log.Error("获取网卡个数失败", "error", err, "ifs", ifs)
 			return nil, err
 		}
 
@@ -198,7 +187,6 @@ func (p *Psutil) GetNetworkRate() (rates NetworkInfo, err error) {
 	// 第一次获取网卡信息
 	IO1, err = getIfIO()
 	if err != nil {
-		p.Log.Error("获取网卡信息失败", "error", err)
 		return
 	}
 	time.Sleep(time.Second)
@@ -206,7 +194,6 @@ func (p *Psutil) GetNetworkRate() (rates NetworkInfo, err error) {
 	// 第二次获取网卡信息
 	IO2, err = getIfIO()
 	if err != nil {
-		p.Log.Error("获取网卡信息失败", "error", err)
 		return
 	}
 
@@ -238,7 +225,6 @@ func (p *Psutil) GetNetworkRate() (rates NetworkInfo, err error) {
 func (p *Psutil) GetBaseInfo() (info BaseInfo, err error) {
 	memoryInfo, err := mem.VirtualMemory()
 	if err != nil {
-		p.Log.Error("获取内存信息失败", "error", err)
 		return
 	}
 
@@ -250,7 +236,6 @@ func (p *Psutil) GetBaseInfo() (info BaseInfo, err error) {
 	// cpu使用率
 	cpuPercentArr, err := cpu.Percent(time.Second, false)
 	if err != nil {
-		p.Log.Error("获取cpu使用率失败", "error", err)
 		return
 	}
 	var (
@@ -266,7 +251,6 @@ func (p *Psutil) GetBaseInfo() (info BaseInfo, err error) {
 	// 平台
 	platform, family, version, err := host.PlatformInformation()
 	if err != nil {
-		p.Log.Error("获取平台信息失败", "error", err)
 		return
 	}
 	info.Platform = platform
@@ -277,6 +261,5 @@ func (p *Psutil) GetBaseInfo() (info BaseInfo, err error) {
 	info.CpuNum = runtime.NumCPU()
 
 	// 返回
-	p.Log.Debug("获取基本信息成功", "info", info)
 	return
 }
